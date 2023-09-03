@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "build": "npm i"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "brcypt": "^1.0.1",
