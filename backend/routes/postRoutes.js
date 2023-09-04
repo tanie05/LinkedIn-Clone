@@ -3,11 +3,15 @@ const Post = require('../models/postModel')
 const User = require('../models/userModel')
 
 //view all posts
-router.route('/').get((req,res) => {
-    Post.find()
-    .then((post) => res.json(post))
-    .catch((err) => res.status(400).json(err))
-})
+router.route('/').get(async (req, res) => {
+    try {
+        const posts = await Post.find({ belongToGroup: false });
+        res.json(posts);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
+
 
 //create a post 
 router.route('/:userId').post(async (req, res) => {

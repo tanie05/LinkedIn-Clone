@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/userModel') 
 const Post = require('../models/postModel') 
+const Group = require('../models/groupModel')
 
 // getting logged in user
 router.route('/:userId').get((req, res) => {
@@ -139,5 +140,25 @@ router.route('/edituser/:userId').put((req, res) => {
         });
 });
 
+router.route('/grouplist/:userId').get((req, res) => {
+    const userId = req.params.userId;
+
+    User.findById(userId)
+        .then(user => {
+            // Extract group IDs from the user's groups array
+            const groupIds = user.groups;
+
+            Group.find({ _id: { $in: groupIds } })
+                .then(groups => {
+                    res.json(groups);
+                })
+                .catch(error => {
+                    res.status(500).json({ error: 'Internal Server Error' });
+                });
+        })
+        .catch(error => {
+            res.status(404).json({ error: 'User not found' });
+        });
+});
 
 module.exports = router

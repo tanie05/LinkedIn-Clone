@@ -1,33 +1,40 @@
-// creating a group
-// fetching group postList and other data
-// removing someone, adding someone, deleting some post, adding a post, editing a post
-// view all group names the user is a part of
-
 const router = require('express').Router()
 const Group = require('../models/groupModel')
 const User = require('../models/userModel')
+const Post = require('../models/postModel')
 
 // creating a group
-router.route('/:adminId').post(async(req,res) => {
-    try{
+router.route('/:adminId').post(async (req, res) => {
+    try {
         const adminId = req.params.adminId;
-        const {title, description} = req.body;
+        const { title, description } = req.body;
         const members = [adminId];
 
-        const newGroup = await new Group({adminId, title, description, members}).save();
+        // Create a new group
+        const newGroup = await new Group({ adminId, title, description, members }).save();
+
+        // Update the admin's groups array with the new group's _id
+        await User.findByIdAndUpdate(
+            adminId,
+            { $push: { groups: newGroup._id } }, // Push the newGroup's _id to the groups array
+            { new: true } // Return the updated user document
+        );
+
         res.status(201).send({
-            success:true, message: "Group created successfully"
-        })
-    }
-    catch(err){
-        console.log(err)
+            success: true,
+            message: 'Group created successfully',
+        });
+    } catch (err) {
+        console.log(err);
         res.status(500).send({
             success: false,
             message: 'Error in creation',
-            err
-        })
+            err,
+        });
     }
-})
+});
+
+
 
 
 // adding new member
@@ -39,7 +46,7 @@ router.route('/addmember/:userId').put(async (req, res) => {
         
         const updatedGroup = await Group.findByIdAndUpdate(
             groupId,
-            { $addToSet: { members: userId } }, // Use $addToSet to prevent duplicate entries
+            { $addToSet: { members: userId } }, 
             { new: true }
         );
 
@@ -63,6 +70,7 @@ router.route('/addmember/:userId').put(async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 // updating group name, description etc
 router.route('/editgroup/:groupId').put(async (req, res) => {
     const groupId = req.params.groupId;
@@ -104,12 +112,17 @@ router.route('/groupposts/:groupId').get(async (req, res) => {
             return res.status(404).json({ message: 'Group not found' });
         }
 
-        const postList = group.postList;
-        res.json(postList);
+        const postIds = group.postList; // Array of post _id values
+
+        // Find all posts where the _id is in the postIds array
+        const posts = await Post.find({ _id: { $in: postIds } });
+
+        res.json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 // leaving group
 router.route('/removeuser/:groupId/:userId').put(async (req, res) => {
@@ -144,6 +157,52 @@ router.route('/removeuser/:groupId/:userId').put(async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
+// creating a post
+router.route('/createpost/:userId').post(async (req, res) => {
+    const userId = req.params.userId;
+    const { title, description, media, belongToGroup, groupId } = req.body;
+
+    try {
+        // Validate that the group with the given groupId exists
+        const group = await Group.findById(groupId);
+
+        if (!group) {
+            return res.status(404).json({ success: false, message: 'Group not found' });
+        }
+
+        // Validate that the user with the given userId exists
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Create a new Post
+        const newPost = await new Post({
+            userId,
+            title,
+            description,
+            media,
+            belongToGroup
+        }).save();
+
+        // Save the postId in postList of the group
+        await Group.findByIdAndUpdate(groupId, {
+            $push: { postList: newPost._id }
+        });
+
+        res.status(201).json({
+            success: true,
+            message: "Post created successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
+
 
 module.exports = router;
 

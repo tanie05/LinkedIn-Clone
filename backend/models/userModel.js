@@ -54,7 +54,7 @@ const userSchema = new Schema({
     }],
     groups : [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Group'
 }],
 
     endorsements: {
