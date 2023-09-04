@@ -3,6 +3,14 @@ const Group = require('../models/groupModel')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
 
+
+// getting group info
+router.route('/:groupId').get((req,res) => {
+    const groupId = req.params.groupId
+    Group.findById(groupId)
+    .then(grp => res.json(grp))
+})
+
 // creating a group
 router.route('/:adminId').post(async (req, res) => {
     try {

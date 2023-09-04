@@ -98,10 +98,10 @@ export default function Navbar() {
                 <HomeIcon/>
                 <IconHeading>Home</IconHeading>
             </Icon>
-            {/* <Icon to = {'/groups'}>
+             <Icon to = {'/groups'}>
                 <GroupIcon/>
                 <IconHeading>Groups</IconHeading>
-            </Icon> */}
+            </Icon> 
             <Icon to = {'/jobs'}>
                 <WorkIcon/>
                 <IconHeading>Jobs</IconHeading>
