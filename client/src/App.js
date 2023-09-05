@@ -30,7 +30,7 @@ function App() {
        <Route path="/login" element = {<Login/>} />
        <Route path="/groups" element = {<Grouplist/>} />
        <Route path="/createjob" element = {<CreateJobPost/>}/>
-       <Route path="/" element = {localStorage.getItem('user') ?  <Feed/> : <Login/>} />
+       <Route path="/" element = {<Feed/> } />
        <Route path="/postform" element = {<PostForm/>} />
        <Route path="/updateuser" element = { <ProfileForm/>} />
        <Route path = "/group/:groupId" element = {<GroupPage/>} />

@@ -8,6 +8,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import {Link} from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { UserContext } from "../UserContext";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Navigate } from "react-router-dom";
+import { useState } from "react";
+import LoginIcon from '@mui/icons-material/Login';
 
 const Container = styled.div`
   display: flex;
@@ -81,7 +85,21 @@ font-size: 50px !important;
 `
 export default function Navbar() {
   
-  const {userInfo} = useContext(UserContext)
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const [Redirect, setRedirect] = useState(false);
+
+  function handleClick() {
+    setUserInfo({
+        flag: false
+    })
+    localStorage.clear()
+    setRedirect(true)
+
+  }
+
+  if(Redirect){
+    <Navigate to = {'/'}/>
+  }
 
   return (
     <Container>
@@ -101,18 +119,31 @@ export default function Navbar() {
                 <HomeIcon style={{ fontSize: "30px", important: "true" }} />
                 <IconHeading>Home</IconHeading>
             </Icon>
-             <Icon to = {'/groups'}>
+             { userInfo.flag && 
+                <Icon to = {'/groups'}>
                 <GroupIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>Groups</IconHeading>
-            </Icon> 
+            </Icon>} 
             <Icon to = {'/jobs'}>
                 <WorkIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>Jobs</IconHeading>
             </Icon>
-            <Icon to = {`/user/${userInfo._id}`}>
+            { userInfo.flag &&
+              <Icon to = {`/user/${userInfo._id}`}>
                 <AccountCircleIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>{userInfo.name}</IconHeading>
+            </Icon>}
+            { userInfo.flag && <Icon>
+            <LogoutIcon onClick = {handleClick} style={{ fontSize: "30px", important: "true" }}/>
+            <IconHeading>Logout</IconHeading>
+            </Icon>}
+            {userInfo.flag===false &&
+            <Icon to = {'/login'}>
+            <LoginIcon style={{ fontSize: "30px", important: "true" }}/>
+            <IconHeading>Login</IconHeading>
             </Icon>
+            }
+            
         </Icons>
         
     </Container>

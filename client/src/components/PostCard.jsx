@@ -186,7 +186,7 @@ export default function PostCard(props) {
 
 <IconContainer onClick={handleSave}>
 {
-    userInfo._id !== userId &&
+    userInfo.flag && userInfo._id !== userId &&
     (isSaved
     ? 
     <BookmarkIcon/>

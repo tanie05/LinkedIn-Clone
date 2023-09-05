@@ -4,7 +4,7 @@ import axios from 'axios';
 import { UserContext } from '../UserContext';
 import baseUrl from '../appConfig';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import GroupIcon from '@mui/icons-material/Group';
 
 
@@ -40,10 +40,21 @@ const PageContainer = styled.div`
   padding: 20px;
 `;
 
+const FormContainer = styled.div`
+`
+const Form = styled.form`
+`
+const Input = styled.input`
+`
+const Button = styled.input`
+`
 export default function Grouplist() {
+
   const [groups, setGroups] = useState([]);
   const { userInfo } = useContext(UserContext);
   const userId = userInfo._id;
+  const [newGroupId, setNewGroupId] = useState("");
+
 
   useEffect(() => {
     axios.get(`${baseUrl}/users/grouplist/${userId}`).then((res) => setGroups(res.data));
@@ -55,10 +66,17 @@ export default function Grouplist() {
       <Title to={`/group/${item._id}`}>{item.title}</Title>
     </Container>
   ));
-
+  
   return (
     <div>
       <Navbar />
+      {/* <FormContainer>
+      <h2>Find a Group</h2>
+        <Form onSubmit={handleJoinGroup}>
+          <Input type='text' placeholder='Group Id' value = {newGroupId} onChange={e => setNewGroupId(e.target.value)} />
+          <Button type='submit' value = 'submit' />
+        </Form>
+      </FormContainer> */}
       <PageContainer>
         {displayList.length === 0 ? (
           <LoadingContainer>Loading...</LoadingContainer>

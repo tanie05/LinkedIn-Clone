@@ -131,6 +131,7 @@ export default function JobPostCard(props) {
     function handleApplyClick() {
        if(isJobLocked === true){
         alert('No longer accepting applications!')
+        return;
        }
         window.location.href = applyLink; 
     }
@@ -160,7 +161,7 @@ export default function JobPostCard(props) {
             <ButtonContainer>
               
                 <ApplyButton onClick={handleApplyClick} style={{marginRight: "10px"}} >Apply Now <OpenInNewIcon /></ApplyButton>
-                { creatorId !== userId &&
+                {userInfo.flag && creatorId !== userId &&
                   <SaveButton onClick={handleSaveClick}>
                     {saveState ? "Saved" : "Save"}
                 </SaveButton>}
@@ -168,7 +169,7 @@ export default function JobPostCard(props) {
                 
                 {
                   
-                  userInfo._id === creatorId &&
+                  userInfo.flag && userInfo._id === creatorId &&
                   <div>
                   <SaveButton onClick={handleJobLock}>
                   {isJobLocked ? "Unlock Job" : "Lock Job"}

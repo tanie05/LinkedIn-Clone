@@ -123,6 +123,7 @@ export default function GroupPage() {
       });
   }
 
+
   return (
     <Container>
       <Navbar />
@@ -134,10 +135,12 @@ export default function GroupPage() {
       <GroupDescription>{group.description}</GroupDescription>
       <SmallNavbar>
         <ShowMembersButton onClick={openPopup}>Show Members</ShowMembersButton>
+        
         <MembersPopup isOpen={isPopupOpen} onRequestClose={closePopup} groupId={groupId} />
         {isMember ? (
           <div>
             <NavItems to={`/postform?groupId=${groupId}`}>Create a Post</NavItems>
+            {group.adminId===userInfo._id && <NavItems to = {`/groupform?groupId=${groupId}`}>Edit Group Settings</NavItems>}
             <Button onClick={handleLeave}>Leave</Button>
           </div>
         ) : (

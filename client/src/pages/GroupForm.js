@@ -107,9 +107,7 @@ export default function GroupForm() {
         .then(setRedirect(true))
         }
         
-        axios.post(`${baseUrl}/groups/${userInfo._id}`, 
-        newGroup)
-        .then(setRedirect(true))
+        
 
 
     }
