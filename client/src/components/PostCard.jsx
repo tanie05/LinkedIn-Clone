@@ -8,7 +8,8 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { UserContext } from '../UserContext';
 import EditIcon from '@mui/icons-material/Edit';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -43,7 +44,7 @@ const AccountIcon = styled(AccountCircleIcon)`
   margin-right: 10px;
   font-size: 50px !important;
 `
-const Name = styled.div`
+const Name = styled(Link)`
   font-weight: bold;
   font-size: 15px;
   color: #333;
@@ -99,6 +100,7 @@ color: black;
 
 
 export default function PostCard(props) {
+
   const {_id, title, description, userId, media } = props.post;
   const [name, setName] = useState('');
   const [profile, setProfile] = useState('');
@@ -146,6 +148,16 @@ export default function PostCard(props) {
     .then(res => setIsSaved(prev => !prev))
     .catch(err => console.log(err))
   }
+  const [redirect, setRedirect] = useState(false)
+  function handleDelete(){
+    axios.delete(`${baseUrl}/posts/${postId}`).then(res => {
+      setRedirect(true)
+    })
+  }
+
+  if(redirect){
+    return <Navigate to = {'/'} />
+  }
 
 
 
@@ -156,7 +168,7 @@ export default function PostCard(props) {
 <ProfileContainer>
   
   {profile ? <ProfileImage src={profile}/> : <AccountIcon/>}
-<Name>
+<Name to = {`/user/${userId}`}>
   {name}
   <div style={{fontSize: "12px", fontWeight: "lighter"}}>{email}</div>
 </Name>
@@ -179,7 +191,10 @@ export default function PostCard(props) {
   <EditIcon/>
 }
 </EditContainer>
-
+{
+  userInfo._id === userId &&
+  <DeleteIcon onClick = {handleDelete}/>
+}
 </ProfileContainer>
 <Title>{title}</Title>
 <Description>{description}</Description>

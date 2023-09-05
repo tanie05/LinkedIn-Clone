@@ -58,6 +58,7 @@ export default function PostForm() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const postId = queryParams.get('postId');
+    const groupId = queryParams.get('groupId');
 
     const [post, setPost] = useState({})
     useEffect(() => {
@@ -103,15 +104,28 @@ export default function PostForm() {
         event.preventDefault();
         const userId = userInfo._id
         
-        const post = {title : title, description : description, media : images, belongToGroup : false}
-         
-        if(postId){
+        var newpost = {
+          title : title, 
+          description : description, 
+          media : images, 
+          belongToGroup : false
+        }
+        if(groupId && !postId){
+          newpost = {...newpost, belongToGroup: true, groupId : groupId}
           
+          // while creating a post
+          // for editing we dont need to send any groupId
+          axios.post(`${baseUrl}/groups/createpost/${userInfo._id}`, newpost).then(setRedirect(true))
+
+          return;
+        }
+        
+        if(postId){
           const updatedPost = {...post, title : title, description : description, media : images}
           axios.put(`${baseUrl}/posts/updatepost/${postId}`, updatedPost).then(res => setRedirect(true))
 
         }else{
-          axios.post(`${baseUrl}/posts/${userId}`, post)
+          axios.post(`${baseUrl}/posts/${userId}`, {title: title, description : description, media: images, belongToGroup: false})
           .then(res => {
               setRedirect(true)
           })

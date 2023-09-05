@@ -55,7 +55,18 @@ const userSchema = new Schema({
     groups : [{
         type: Schema.Types.ObjectId,
         ref: 'Group'
-}],
+    }],
+    about: {
+        type: String,
+        default: ""
+    },
+    keyExpertise : 
+        {
+            type: String, 
+            default : ""
+        }
+    ,
+
 
     endorsements: {
         type: Number,

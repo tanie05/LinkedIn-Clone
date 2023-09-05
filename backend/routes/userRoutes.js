@@ -22,6 +22,8 @@ router.route('/:userId').get((req, res) => {
                     profileImg: user.profileImg,
                     coverImg: user.coverImg,
                     createdPosts: user.createdPosts,
+                    about: user.about,
+                    keyExpertise: user.keyExpertise
                 };
                 res.json(userData);
             } else {
@@ -120,12 +122,14 @@ router.route('/otheruser/:userId').get((req, res) => {
 // edit user profile
 router.route('/edituser/:userId').put((req, res) => {
     const id = req.params.userId; 
-    const { name, coverImg, profileImg } = req.body; 
+    const { name, coverImg, profileImg, about, keyExpertise } = req.body; 
 
     const updateData = {};
     if (name) updateData.name = name;
     if (coverImg) updateData.coverImg = coverImg;
     if (profileImg) updateData.profileImg = profileImg;
+    if(about) updateData.about = about;
+    if(keyExpertise) updateData.keyExpertise = keyExpertise;
 
     User.findByIdAndUpdate(id, updateData, { new: true })
         .then((updatedUser) => {
@@ -139,6 +143,7 @@ router.route('/edituser/:userId').put((req, res) => {
             res.status(500).json({ message: 'Internal server error' });
         });
 });
+
 
 router.route('/grouplist/:userId').get((req, res) => {
     const userId = req.params.userId;
@@ -160,5 +165,7 @@ router.route('/grouplist/:userId').get((req, res) => {
             res.status(404).json({ error: 'User not found' });
         });
 });
+
+
 
 module.exports = router

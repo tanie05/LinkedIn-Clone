@@ -14,6 +14,7 @@ import GroupPage from "./pages/GroupPage";
 import GroupForm from './pages/GroupForm'
 
 import { UserContext } from "./UserContext";
+import Saved from "./pages/Saved";
 function App() {
 
   const {userInfo} = useContext(UserContext)
@@ -34,6 +35,7 @@ function App() {
        <Route path="/updateuser" element = { <ProfileForm/>} />
        <Route path = "/group/:groupId" element = {<GroupPage/>} />
        <Route path = "/groupform" element = {<GroupForm/>}/>
+       <Route path="/saved/user/:userId" element = {<Saved/>}/>
       </Routes>
       </Router>
     </UserContextProvider>

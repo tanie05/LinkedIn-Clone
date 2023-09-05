@@ -64,6 +64,9 @@ export default function ProfileForm() {
   const [name, setName] = useState(userInfo.name)
   const [profile, setProfile] = useState(userInfo.profileImg)
   const [cover, setCover] = useState(userInfo.coverImg)
+  const [about, setAbout] = useState(userInfo.about)
+  const [keyExpertise, setKeyExpertise] = useState(userInfo.keyExpertise)
+
   const [redirect, setRedirect] = useState(false);
   const userId = userInfo._id;
 
@@ -97,9 +100,11 @@ export default function ProfileForm() {
     const data = {
       name: name,
       profileImg: profile,
-      coverImg: cover
+      coverImg: cover,
+      about: about, 
+      keyExpertise: keyExpertise,
     };
-    console.log(data)
+    
     try {
         
       const res = await axios.put(`${baseUrl}/users/edituser/${userId}`, data);
@@ -108,6 +113,8 @@ export default function ProfileForm() {
         name: name,
         profileImg: profile,
         coverImg: cover,
+        about : about, 
+        keyExpertise: keyExpertise,
         flag: true
       };
       setUserInfo(value);
@@ -117,7 +124,7 @@ export default function ProfileForm() {
     }
   }
   if(redirect){
-    return <Navigate to = { "/profile"} />
+    return <Navigate to = { `/user/${userInfo._id}`} />
   }
 
   return (
@@ -140,6 +147,8 @@ export default function ProfileForm() {
                 onChange={handleCoverChange}
             />
             </ImageInputContainer>
+            <Input type='text' placeholder='About' value = {about} onChange={e => setAbout(e.target.value)}/>
+            <Input type='text' placeholder='Key Expertise' onChange={e => setKeyExpertise(e.target.value)} />
             <Button type='submit' value='Submit' />
         </Form>
     </Container>

@@ -6,6 +6,7 @@ import baseUrl from '../appConfig';
 import styled from 'styled-components'
 import PostCard from '../components/PostCard';
 import JobPostCard from '../components/JobPostCard'
+import { Link } from 'react-router-dom';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -49,6 +50,16 @@ const Container = styled.div`
 width: 50%;
 
 `
+const SmallNavbar = styled.div`
+`
+
+const NavItems = styled(Link)`
+`
+const About = styled.p`
+`
+const keyExpertise = styled.p`
+`
+
 
 export default function Profile() {
   const currentURL = window.location.href;
@@ -102,7 +113,23 @@ export default function Profile() {
       <ProfileImage src={user.profileImg} alt="Profile" />
       <UserName>{user.name}</UserName>
       <UserEmail>{user.email}</UserEmail>
+      <About>{user.about}</About>
+      <keyExpertise>{user.keyExpertise}</keyExpertise>
+
     </ProfileContainer>
+    {
+      userId === userInfo._id &&
+      <SmallNavbar>
+      <NavItems to = {'/postform'}>Create a post</NavItems>
+      <NavItems to = {'/createjob'} >Create a job</NavItems>
+      <NavItems to = {'/groupform'}>Create a group</NavItems>
+      <NavItems to = {'/updateuser'}>Update Profile</NavItems>
+      <NavItems to = {`/saved/user/${userInfo._id}`} >Saved</NavItems>
+
+      </SmallNavbar>
+
+    }
+
     
  <CenterContainer>
  <Container>
