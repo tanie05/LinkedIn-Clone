@@ -113,7 +113,8 @@ router.route('/updateJobPost/:JobPostId').put((req, res) => {
 // locking a post
 router.route('/lock/:JobPostId').put((req,res) => {
     const id = req.params.JobPostId;
-    JobPost.findByIdAndUpdate(id, {isLocked: true})
+    const isLocked = req.body.isLocked;
+    JobPost.findByIdAndUpdate(id, {isLocked: isLocked})
     .then((updatedJobPost) => {
         if (updatedJobPost) {
             res.json(updatedJobPost);

@@ -51,9 +51,11 @@ width: 50%;
 `
 
 export default function Profile() {
-
+  const currentURL = window.location.href;
+  const parts = currentURL.split('/');
+  const userId = parts[parts.length - 1];
+  
   const {userInfo} = useContext(UserContext);
-  const userId = userInfo._id;
   const [user,setUser] = useState({});
 
   

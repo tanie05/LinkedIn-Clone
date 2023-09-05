@@ -6,6 +6,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
 import baseUrl from '../appConfig'
 import {UserContext} from '../UserContext'
+import EditIcon from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
 
@@ -76,6 +78,11 @@ const SaveButton = styled.button`
   }
 
 `;
+const EditContainer = styled(Link)`
+cursor: pointer;
+margin-left: auto;
+color: black;
+`
 
 
 export default function JobPostCard(props) {
@@ -89,12 +96,14 @@ export default function JobPostCard(props) {
         employmentType,
         seniorityLevel,
         applyLink,
+        isLocked
     } = props.job;
     const creatorId = props.job.userId;
 
     const {userInfo} = useContext(UserContext);
     const userId = userInfo ? userInfo._id : null; 
     const savedJobs = userInfo ? userInfo.savedJobs || [] : []; 
+    const [isJobLocked, setIsJobLocked] = useState(isLocked);
 
     const index = savedJobs.indexOf(_id);
     const save = index === -1 ? false : true;
@@ -120,7 +129,15 @@ export default function JobPostCard(props) {
     }
 
     function handleApplyClick() {
+       if(isJobLocked === true){
+        alert('No longer accepting applications!')
+       }
         window.location.href = applyLink; 
+    }
+
+    function handleJobLock(){
+      axios.put(`${baseUrl}/jobPosts/lock/${_id}`, {isLocked : !isJobLocked}).then(setIsJobLocked(prev=> !prev));
+
     }
 
     return (
@@ -140,11 +157,29 @@ export default function JobPostCard(props) {
                 </Details>
             </DetailsContainer>
             <ButtonContainer>
+              
                 <ApplyButton onClick={handleApplyClick} style={{marginRight: "10px"}} >Apply Now <OpenInNewIcon /></ApplyButton>
                 { creatorId !== userId &&
                   <SaveButton onClick={handleSaveClick}>
                     {saveState ? "Saved" : "Save"}
                 </SaveButton>}
+                
+                
+                {
+                  
+                  userInfo._id === creatorId &&
+                  <div>
+                  <SaveButton onClick={handleJobLock}>
+                  {isJobLocked ? "Unlock Job" : "Lock Job"}
+                  </SaveButton>
+                  <EditContainer to = {`/createjob?jobId=${_id}`} >
+                  <EditIcon/>
+                  </EditContainer>
+                  
+                  </div>
+                  
+                }
+                
             </ButtonContainer>
         </Container>
 

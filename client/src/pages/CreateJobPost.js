@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useContext } from 'react';
 import styled from 'styled-components'
 import { UserContext } from '../UserContext'
 import axios from 'axios'
 import baseUrl from '../appConfig';
 import AddIcon from '@mui/icons-material/Add';
+import { Navigate } from 'react-router-dom'
+import { useLocation} from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -76,7 +78,24 @@ export default function CreateJobPost() {
 
   const [requirement, setRequirement] = useState("")
   const [skill, setSkill] = useState("")
-  
+  const [redirect, setRedirect] = useState(false)
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const jobId = queryParams.get('jobId');
+
+  useEffect(() => {
+    if(jobId){
+      axios.get(`${baseUrl}/jobPosts/${jobId}`).then((res) => {
+        setJob(res.data);
+      })
+    }
+    
+  }, [jobId])
+
+
+
+
   function handleCompanyChange(e){
     setJob(prevValue => {
         return {...prevValue, company: e.target.value}
@@ -139,17 +158,27 @@ export default function CreateJobPost() {
 
   function handleJobSubmit(event){
     event.preventDefault();
-    console.log(userId)
-    console.log(job)
-    axios.post(`${baseUrl}/jobPosts/${userId}`, job)
-    .then(console.log('eert'))
+    
+    if(jobId) {
+      axios.put(`${baseUrl}/jobPosts/updateJobPost/${jobId}`, job)
+      .then(setRedirect(true))
+
+
+    }else{
+      axios.post(`${baseUrl}/jobPosts/${userId}`, job)
+      .then(setRedirect(true))
+    }
+    
   }
+  if(redirect){
+    return <Navigate to={'/jobs'} />
+}
 
   return (
     <Container>
         <Main>
         <Heading>
-            Create Job Post
+            {jobId ?  "Edit Job Post" :"Create Job Post"}
         </Heading>
         <JobPostForm onSubmit={handleJobSubmit}>
         <Input type='text' placeholder='Company Name' value={job.company} onChange={(e) => handleCompanyChange(e)}/>

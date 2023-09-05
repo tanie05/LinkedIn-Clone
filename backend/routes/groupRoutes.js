@@ -3,23 +3,22 @@ const Group = require('../models/groupModel')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
 
-
 // getting group info
 router.route('/:groupId').get((req,res) => {
     const groupId = req.params.groupId
     Group.findById(groupId)
     .then(grp => res.json(grp))
 })
-
+ 
 // creating a group
 router.route('/:adminId').post(async (req, res) => {
     try {
         const adminId = req.params.adminId;
-        const { title, description } = req.body;
+        const { title, description, coverImg } = req.body;
         const members = [adminId];
 
         // Create a new group
-        const newGroup = await new Group({ adminId, title, description, members }).save();
+        const newGroup = await new Group({ adminId, title, description, members, coverImg }).save();
 
         // Update the admin's groups array with the new group's _id
         await User.findByIdAndUpdate(

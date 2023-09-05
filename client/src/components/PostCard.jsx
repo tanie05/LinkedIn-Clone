@@ -7,6 +7,9 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { UserContext } from '../UserContext';
+import EditIcon from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom';
+
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -88,7 +91,11 @@ const IconContainer = styled.div`
  margin-left: auto;
 
 `
-
+const EditContainer = styled(Link)`
+cursor: pointer;
+margin-left: auto;
+color: black;
+`
 
 
 export default function PostCard(props) {
@@ -140,6 +147,8 @@ export default function PostCard(props) {
     .catch(err => console.log(err))
   }
 
+
+
   return (
     <CenteredContainer>
 <Container>
@@ -163,6 +172,14 @@ export default function PostCard(props) {
     <BookmarkBorderIcon/>)
 }
 </IconContainer>
+
+<EditContainer to = {`/postform?postId=${_id}`} >
+{
+  userInfo._id === userId &&
+  <EditIcon/>
+}
+</EditContainer>
+
 </ProfileContainer>
 <Title>{title}</Title>
 <Description>{description}</Description>

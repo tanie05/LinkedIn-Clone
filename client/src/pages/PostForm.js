@@ -1,10 +1,10 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext,useEffect,useState} from 'react'
 import styled from 'styled-components'
 import { UserContext } from '../UserContext'
 import axios from 'axios'
 import baseUrl from '../appConfig'
 import { Navigate } from 'react-router-dom'
-
+import { useLocation} from 'react-router-dom';
 
 const Container = styled.div`
   max-width: 600px;
@@ -55,7 +55,25 @@ export default function PostForm() {
     const [description, setDescription] = useState("")
     const [images, setImages] = useState([]);
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const postId = queryParams.get('postId');
 
+    const [post, setPost] = useState({})
+    useEffect(() => {
+      if(postId){
+        axios.get(`${baseUrl}/posts/${postId}`).then(res => {
+          setPost(res.data)
+          setTitle(res.data.title)
+          setDescription(res.data.description)
+          setImages(res.data.media)
+  
+        })
+      }
+      
+
+    },[postId])
+    
     const handleImageUpload = (e) => {
       const uploadedImages = e.target.files;
       const imagePreviews = [];
@@ -79,6 +97,7 @@ export default function PostForm() {
 
     const [redirect, setRedirect] = useState(false)
     const {userInfo} = useContext(UserContext);
+    
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -86,12 +105,19 @@ export default function PostForm() {
         
         const post = {title : title, description : description, media : images, belongToGroup : false}
          
+        if(postId){
+          
+          const updatedPost = {...post, title : title, description : description, media : images}
+          axios.put(`${baseUrl}/posts/updatepost/${postId}`, updatedPost).then(res => setRedirect(true))
 
-        axios.post(`${baseUrl}/posts/${userId}`, post)
-        .then(res => {
-            setRedirect(true)
-        })
-        .catch(err => console.log(err)) 
+        }else{
+          axios.post(`${baseUrl}/posts/${userId}`, post)
+          .then(res => {
+              setRedirect(true)
+          })
+          .catch(err => console.log(err))
+        }
+         
     }
 
     if(redirect){
@@ -101,7 +127,7 @@ export default function PostForm() {
 
   return (
     <Container>
-        <Heading>Create a post</Heading>
+        <Heading>{postId ? "Edit post" : "Create a post"}</Heading>
         <Form onSubmit={handleSubmit}>
             <Input type='text' placeholder='Title' value = {title} onChange={(e) => setTitle(e.target.value)} />
             <br/>

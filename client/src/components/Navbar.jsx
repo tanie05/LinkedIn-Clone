@@ -106,7 +106,7 @@ export default function Navbar() {
                 <WorkIcon/>
                 <IconHeading>Jobs</IconHeading>
             </Icon>
-            <Icon to = {'/profile'}>
+            <Icon to = {`/user/${userInfo._id}`}>
                 <AccountCircleIcon/>
                 <IconHeading>{userInfo.name}</IconHeading>
             </Icon>
