@@ -75,7 +75,10 @@ const SearchInput = styled.input`
   margin-left: 5px;
   width: 300px; 
 `
-
+const LinkedInLogo = styled(LinkedInIcon)`
+font-size: 50px !important;
+  
+`
 export default function Navbar() {
   
   const {userInfo} = useContext(UserContext)
@@ -84,30 +87,30 @@ export default function Navbar() {
     <Container>
         <LogoAndSearch>
             <Logo to={'/'}>
-            <LinkedInIcon/>
+            <LinkedInLogo/>
             </Logo>
         
-        <SearchContainer>
+        {/* <SearchContainer>
         <SearchIcon />
         <SearchInput type="text" placeholder="Search" />
-        </SearchContainer>
+        </SearchContainer> */}
         </LogoAndSearch>
         
         <Icons>
             <Icon to = {'/'}>
-                <HomeIcon/>
+                <HomeIcon style={{ fontSize: "30px", important: "true" }} />
                 <IconHeading>Home</IconHeading>
             </Icon>
              <Icon to = {'/groups'}>
-                <GroupIcon/>
+                <GroupIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>Groups</IconHeading>
             </Icon> 
             <Icon to = {'/jobs'}>
-                <WorkIcon/>
+                <WorkIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>Jobs</IconHeading>
             </Icon>
             <Icon to = {`/user/${userInfo._id}`}>
-                <AccountCircleIcon/>
+                <AccountCircleIcon style={{ fontSize: "30px", important: "true" }}/>
                 <IconHeading>{userInfo.name}</IconHeading>
             </Icon>
         </Icons>

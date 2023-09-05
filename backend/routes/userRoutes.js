@@ -51,7 +51,9 @@ router.route('/otheruser/:userId').get((req, res) => {
                     createdJobs: user.createdJobs,
                     endorsements: user.endorsements,
                     profileImg: user.profileImg,
-                    coverImg: user.coverImg
+                    coverImg: user.coverImg,
+                    about: user.about,
+                    keyExpertise: user.keyExpertise
                 };
                 res.json(userData);
             } else {

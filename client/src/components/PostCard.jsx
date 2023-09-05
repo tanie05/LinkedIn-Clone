@@ -11,26 +11,27 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Link, Navigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   background-color: #f0f0f0;
+  padding: 20px 0;
 `;
 
 const Container = styled.div`
-  
   background-color: #fff;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
   margin: 20px;
   width: 500px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
- 
 `;
 
 const ProfileImage = styled.img`
@@ -43,61 +44,68 @@ const ProfileImage = styled.img`
 const AccountIcon = styled(AccountCircleIcon)`
   margin-right: 10px;
   font-size: 50px !important;
-`
+`;
+
 const Name = styled(Link)`
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
+  color: black;
+  text-decoration: none;
+`;
+
+const SubTitle = styled.div`
+  font-size: 14px;
   color: #333;
 `;
 
 const Title = styled.div`
-  
-  font-size: 20px;
-  margin-top: 8px;
-  color: #555;
-`;
-
-const Description = styled.div`
-  font-size: 1rem;
+  font-size: 16px;
+  font-weight: bold;
   margin-top: 8px;
   color: #333;
 `;
 
+const Description = styled.div`
+  font-size: 16px;
+  margin-top: 8px;
+  color: #555;
+`;
+
 const MediaContainer = styled.div`
-  display: flex;
-  align-items: center;
   margin-top: 16px;
+  position: relative;
 `;
 
 const MediaItem = styled.img`
   max-width: 100%;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  margin-right: 16px;
-  width: 500px;
-  height: 500px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
 `;
 
 const NextIcon = styled(NavigateNextIcon)`
-  margin-left: -50px;
-    background-color: whitesmoke;
-    border-radius: 50%;
-    cursor: pointer;
-  
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #0073b1; 
+  border-radius: 50%;
+  padding: 8px;
+  color: #fff;
+  cursor: pointer;
 `;
 
 const IconContainer = styled.div`
- cursor: pointer;
- margin-left: auto;
+  cursor: pointer;
+  margin-left: auto;
+`;
 
-`
 const EditContainer = styled(Link)`
-cursor: pointer;
-margin-left: auto;
-color: black;
-`
-
+  cursor: pointer;
+  margin-left: auto;
+  color: black;
+`;
 
 export default function PostCard(props) {
 
@@ -106,6 +114,7 @@ export default function PostCard(props) {
   const [profile, setProfile] = useState('');
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [email, setEmail] = useState("")
+  const [keyExpertise, setKeyExpertise] = useState("")
   const {userInfo} = useContext(UserContext)
   const [isSaved, setIsSaved] = useState(false)
   const postId = _id;
@@ -130,6 +139,7 @@ export default function PostCard(props) {
         setName(res.data.name);
         setProfile(res.data.profileImg);
         setEmail(res.data.email)
+        setKeyExpertise(res.data.keyExpertise)
       })
       .catch((err) => {
         console.log(err)
@@ -170,7 +180,7 @@ export default function PostCard(props) {
   {profile ? <ProfileImage src={profile}/> : <AccountIcon/>}
 <Name to = {`/user/${userId}`}>
   {name}
-  <div style={{fontSize: "12px", fontWeight: "lighter"}}>{email}</div>
+  <div style={{fontSize: "12px", fontWeight: "lighter"}}>{keyExpertise}</div>
 </Name>
   
 
@@ -193,7 +203,7 @@ export default function PostCard(props) {
 </EditContainer>
 {
   userInfo._id === userId &&
-  <DeleteIcon onClick = {handleDelete}/>
+  <DeleteIcon onClick = {handleDelete} style={{cursor: "pointer"}}/>
 }
 </ProfileContainer>
 <Title>{title}</Title>

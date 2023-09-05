@@ -25,12 +25,14 @@ const jobPostSchema = new Schema({
     employmentType: {
         type: String,
         enum: ['Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship'],
-        required: true
+        required: true,
+        default: "Full-time"
     },
     seniorityLevel: {
         type: String,
         enum: ['Entry level', 'Mid-Senior level', 'Senior level', 'Executive'],
-        required: true
+        required: true,
+        default: "Entry-level"
     },
     applyLink: {
         type: String,

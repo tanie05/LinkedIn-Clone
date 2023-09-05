@@ -112,7 +112,7 @@ export default function JobPostCard(props) {
 
     const skillsList = skills.map(item => {
         return (
-            <p key={item}>{item}</p>
+            <ul key={item}>{item}</ul>
         )
     })
 
@@ -153,7 +153,8 @@ export default function JobPostCard(props) {
                 </Details>
                 <Details>
                     <ChecklistIcon style={{marginRight: "10px"}} />
-                    {skillsList}
+                    {/* {skillsList} */}
+                    {skills[0]} and {skills.length-1} more.
                 </Details>
             </DetailsContainer>
             <ButtonContainer>

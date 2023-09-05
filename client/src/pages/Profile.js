@@ -8,17 +8,23 @@ import PostCard from '../components/PostCard';
 import JobPostCard from '../components/JobPostCard'
 import { Link } from 'react-router-dom';
 
+
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  background-color: #fff; /* White background for the profile section */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px;
 `;
 
 const CoverImage = styled.img`
   width: 100%;
   max-height: 250px;
   object-fit: cover;
+  border-radius: 8px 8px 0 0; /* Rounded corners for the top of the cover image */
 `;
 
 const ProfileImage = styled.img`
@@ -42,24 +48,63 @@ const UserEmail = styled.p`
   margin-top: 10px;
 `;
 
-const CenterContainer = styled.div`
-display: flex;
-  justify-content: center;
-`
-const Container = styled.div`
-width: 50%;
-
-`
-const SmallNavbar = styled.div`
-`
-
-const NavItems = styled(Link)`
-`
 const About = styled.p`
-`
-const keyExpertise = styled.p`
-`
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+`;
 
+const KeyExpertise = styled.p`
+  font-size: 16px;
+  color: #555;
+  margin-top: 10px;
+`;
+
+const ActionLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+const ActionLink = styled(Link)`
+  font-size: 16px;
+  color: #0073b1; /* LinkedIn blue */
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const CenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Container = styled.div`
+  width: 50%;
+`;
+const ExpertiseBox = styled.div`
+  background-color: #fff; /* White background for the box */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px;
+`;
+
+const AboutBox = styled.div`
+  background-color: #fff; /* White background for the box */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px ;
+
+`;
+
+const Heading = styled.h2`
+  font-size: 20px;
+  color: #333;
+`;
 
 export default function Profile() {
   const currentURL = window.location.href;
@@ -105,44 +150,40 @@ export default function Profile() {
   const mergedCreatedArray = [...displayCreatedJobs, ...displayCreatedPosts];
 
   return (
-    <div style={{backgroundColor: "#f0f0f0"}}>
-    <Navbar/>
-      
-    <ProfileContainer>
-      <CoverImage src={user.coverImg} alt="Cover" />
-      <ProfileImage src={user.profileImg} alt="Profile" />
-      <UserName>{user.name}</UserName>
-      <UserEmail>{user.email}</UserEmail>
-      <About>{user.about}</About>
-      <keyExpertise>{user.keyExpertise}</keyExpertise>
+    <div style={{ backgroundColor: "#f0f0f0" }}>
+      <Navbar />
+      <ProfileContainer>
+        <CoverImage src={user.coverImg} alt="Cover" />
+        <ProfileImage src={user.profileImg} alt="Profile" />
+        <UserName>{user.name}</UserName>
+        <UserEmail>{user.email}</UserEmail>
+        
+        
+        
+        {userId === userInfo._id && (
+          <ActionLinks>
+            <ActionLink to="/postform">Create a post</ActionLink>
+            <ActionLink to="/createjob">Create a job</ActionLink>
+            <ActionLink to="/groupform">Create a group</ActionLink>
+            <ActionLink to="/updateuser">Update Profile</ActionLink>
+            <ActionLink to={`/saved/user/${userInfo._id}`}>Saved</ActionLink>
+          </ActionLinks>
+        )}
+      </ProfileContainer>
 
-    </ProfileContainer>
-    {
-      userId === userInfo._id &&
-      <SmallNavbar>
-      <NavItems to = {'/postform'}>Create a post</NavItems>
-      <NavItems to = {'/createjob'} >Create a job</NavItems>
-      <NavItems to = {'/groupform'}>Create a group</NavItems>
-      <NavItems to = {'/updateuser'}>Update Profile</NavItems>
-      <NavItems to = {`/saved/user/${userInfo._id}`} >Saved</NavItems>
+      <ExpertiseBox>
+          <Heading>Key Expertise</Heading>
+          <KeyExpertise>{user.keyExpertise}</KeyExpertise>
+        </ExpertiseBox>
 
-      </SmallNavbar>
+        <AboutBox>
+          <Heading>About</Heading>
+          <About>{user.about}</About>
+        </AboutBox>
 
-    }
-
-    
- <CenterContainer>
- <Container>
-{mergedCreatedArray}
- </Container>
- </CenterContainer>
-
-
-
-
-
-
-  
+      <CenterContainer>
+        <Container>{mergedCreatedArray}</Container>
+      </CenterContainer>
     </div>
-  )
+  );
 }

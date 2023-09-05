@@ -3,6 +3,7 @@ import baseUrl from '../appConfig'
 import axios from 'axios'
 import PostCard from '../components/PostCard';
 import JobPostCard from '../components/JobPostCard';
+import Navbar from '../components/Navbar';
 
 export default function Saved() {
 
@@ -32,7 +33,8 @@ export default function Saved() {
 
   return (
     <div>
-      {mergedCreatedArray}
+        <Navbar/>
+      {mergedCreatedArray.length===0 ? <h3>No saved Items</h3> : mergedCreatedArray}
     </div>
   )
 }
