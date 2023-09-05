@@ -23,19 +23,29 @@ function App() {
       <Router>
       <Routes>
        
+      <Route path="/login" element = {<Login/>} />
+      <Route path="/register" element = {<Register/>}/>
+
+      <Route path="/user/:userId" element={<Profile />}/>
+      <Route path="/updateuser" element = { <ProfileForm/>} />
+      <Route path="/saved/user/:userId" element = {<Saved/>}/>
+
+      <Route path = "/group/:groupId" element = {<GroupPage/>} />
+      <Route path="/groups" element = {<Grouplist/>} />
+      <Route path = "/groupform" element = {<GroupForm/>}/>
+      
+      <Route path="/jobs" element = {<Jobs/>}/>
+      <Route path="/createjob" element = {<CreateJobPost/>}/>
+
+      <Route path="/" element = {<Feed/> } />
+      <Route path="/postform" element = {<PostForm/>} />
+
        
-       <Route path="/user/:userId" element={<Profile />}/>
-       <Route path="/jobs" element = {<Jobs/>}/>
-       <Route path="/register" element = {<Register/>}/>
-       <Route path="/login" element = {<Login/>} />
-       <Route path="/groups" element = {<Grouplist/>} />
-       <Route path="/createjob" element = {<CreateJobPost/>}/>
-       <Route path="/" element = {<Feed/> } />
-       <Route path="/postform" element = {<PostForm/>} />
-       <Route path="/updateuser" element = { <ProfileForm/>} />
-       <Route path = "/group/:groupId" element = {<GroupPage/>} />
-       <Route path = "/groupform" element = {<GroupForm/>}/>
-       <Route path="/saved/user/:userId" element = {<Saved/>}/>
+       
+       
+
+       
+       
       </Routes>
       </Router>
     </UserContextProvider>
