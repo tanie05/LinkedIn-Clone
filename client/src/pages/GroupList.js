@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { Link, Navigate } from 'react-router-dom';
 import GroupIcon from '@mui/icons-material/Group';
 
-
 const linkedinBlue = '#0077B5';
 const linkedinLightGray = '#F3F6F8';
 
@@ -55,10 +54,28 @@ export default function Grouplist() {
   const userId = userInfo._id;
   const [newGroupId, setNewGroupId] = useState("");
 
+  const [otherGroups, setOtherGroups] = useState([]);
+
 
   useEffect(() => {
     axios.get(`${baseUrl}/users/grouplist/${userId}`).then((res) => setGroups(res.data));
-  }, []);
+
+  }, [userId]);
+
+  useEffect(()=> {
+    axios.get(`${baseUrl}/groups/`).then((res) => {
+      const groupIds = groups.map(item => item._id);
+      const newGroups = res.data.filter(item => !groupIds.includes(item._id));
+      setOtherGroups(newGroups);
+    })
+  }, [groups])
+
+  const displayOtherGroups = otherGroups.map((item)=> (
+    <Container key={item._id}>
+      <GroupIcon/>
+      <Title to={`/group/${item._id}`}>{item.title}</Title>
+    </Container>
+  ))
 
   const displayList = groups.map((item) => (
     <Container key={item._id}>
@@ -82,6 +99,14 @@ export default function Grouplist() {
           <LoadingContainer>Loading...</LoadingContainer>
         ) : (
           displayList
+        )}
+      </PageContainer>
+      <PageContainer>
+        <h2>Other Groups</h2>
+        {displayOtherGroups.length === 0 ? (
+          <LoadingContainer>Loading...</LoadingContainer>
+        ) : (
+          displayOtherGroups
         )}
       </PageContainer>
     </div>

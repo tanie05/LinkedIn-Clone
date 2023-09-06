@@ -3,6 +3,17 @@ const Group = require('../models/groupModel')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
 
+// getting all groups
+router.route('/').get(async(req,res) => {
+    try {
+        const groups = await Group.find();
+        res.json(groups);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+})
+
+
 // getting group info
 router.route('/:groupId').get((req,res) => {
     const groupId = req.params.groupId
@@ -81,7 +92,7 @@ router.route('/addmember/:userId').put(async (req, res) => {
 // updating group name, description etc
 router.route('/editgroup/:groupId').put(async (req, res) => {
     const groupId = req.params.groupId;
-    const { name, description, coverImg } = req.body;
+    const { title, description, coverImg } = req.body;
 
     try {
         // Update group document with the provided data
@@ -89,7 +100,7 @@ router.route('/editgroup/:groupId').put(async (req, res) => {
             groupId,
             {
                 $set: {
-                    name: name,
+                    title: title,
                     description: description,
                     coverImg: coverImg
                 }
