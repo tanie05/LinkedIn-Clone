@@ -47,6 +47,12 @@ const SmallNavbar = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    
+  }
 `;
 
 const NavItems = styled(Link)`
@@ -54,6 +60,12 @@ const NavItems = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   margin-right: 20px;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
 `;
 
 const Button = styled.button`
@@ -65,6 +77,10 @@ const Button = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   font-weight: bold;
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 
   &:hover {
     background-color: #005b8a;
@@ -73,6 +89,10 @@ const Button = styled.button`
 
 const ShowMembersButton = styled(Button)`
   margin-right: 10px;
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 export default function GroupPage() {

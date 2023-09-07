@@ -79,10 +79,14 @@ const ActionLink = styled(Link)`
 const CenterContainer = styled.div`
   display: flex;
   justify-content: center;
+  
 `;
 
 const Container = styled.div`
   width: 50%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const ExpertiseBox = styled.div`
   background-color: #fff; /* White background for the box */
