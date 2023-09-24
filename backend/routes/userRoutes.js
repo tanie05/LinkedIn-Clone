@@ -168,6 +168,12 @@ router.route('/grouplist/:userId').get((req, res) => {
         });
 });
 
-
+router.route('/').get((req, res) => {
+    User.find({}, '_id name').then(users => {
+        res.json(users);
+    }).catch(err => {
+        res.status(500).json({ error: err.message });
+    });
+});
 
 module.exports = router

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Profile from "./pages/Profile";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Jobs from "./pages/Jobs";
@@ -11,13 +11,14 @@ import PostForm from "./pages/PostForm";
 import ProfileForm from "./pages/ProfileForm";
 import Grouplist from "./pages/GroupList";
 import GroupPage from "./pages/GroupPage";
-import GroupForm from './pages/GroupForm'
-
-import { UserContext } from "./UserContext";
+import GroupForm from './pages/GroupForm';
+import SearchResult from "./pages/SearchResult";
 import Saved from "./pages/Saved";
+import JobPage from "./pages/JobPage";
+
 function App() {
 
-  const {userInfo} = useContext(UserContext)
+  // const {userInfo} = useContext(UserContext)
   return (
     <UserContextProvider>
       <Router>
@@ -39,6 +40,9 @@ function App() {
 
       <Route path="/" element = {<Feed/> } />
       <Route path="/postform" element = {<PostForm/>} />
+
+      <Route path = "/searchresults/:search" element = {<SearchResult/>}/>
+      <Route path="/job/:jobId" element = {<JobPage/>}/>
 
        
        

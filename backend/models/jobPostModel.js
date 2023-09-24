@@ -41,7 +41,13 @@ const jobPostSchema = new Schema({
     isLocked: {
         type: Boolean,
         default: false
-    }
+    },
+    tags: [
+        {
+            type: String,
+            required: false
+        }
+    ]
 }, { timestamps: true });
 
 const JobPost = mongoose.model('JobPost', jobPostSchema);

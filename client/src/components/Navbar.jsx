@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import styled from 'styled-components'
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import HomeIcon from '@mui/icons-material/Home';
@@ -12,6 +12,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import LoginIcon from '@mui/icons-material/Login';
+
+
 
 const Container = styled.div`
   display: flex;
@@ -61,6 +63,20 @@ const Logo = styled(Link)`
     
 
 `
+const SearchInput = styled.input`
+  margin: 0;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  flex-grow: 1;
+
+  @media (max-width: 500px) {
+    display: ${props => props.showInput ? 'block' : 'none'};
+    position: absolute;
+    border: 1px solid gray;
+  }
+`;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -70,19 +86,15 @@ const SearchContainer = styled.div`
   padding: 5px;
   
 `
-
-const SearchInput = styled.input`
-  border: none;
-  background-color: transparent;
-  color: white;
-  outline: none;
-  margin-left: 5px;
-  width: 300px; 
+const SearchForm = styled.form`
+  margin: 0;
 `
+
 const LinkedInLogo = styled(LinkedInIcon)`
 font-size: 50px !important;
   
 `
+
 export default function Navbar() {
   
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -97,8 +109,23 @@ export default function Navbar() {
 
   }
 
+  const [search, setSearch] = useState("")
+  const [redirectSearch, setRedirectSearch] = useState(false)
+  const handleSearch = (event) => {
+    event.preventDefault()
+    setRedirectSearch(true)
+    
+  } 
+  
+  
+
   if(Redirect){
     <Navigate to = {'/'}/>
+  }
+
+  const [showInput, setShowInput] = useState(false);
+  const handleSearchIconClick = () => {
+    setShowInput(true);
   }
 
   return (
@@ -107,11 +134,19 @@ export default function Navbar() {
             <Logo to={'/'}>
             <LinkedInLogo/>
             </Logo>
-        
-        {/* <SearchContainer>
-        <SearchIcon />
-        <SearchInput type="text" placeholder="Search" />
-        </SearchContainer> */}
+
+            <SearchContainer>
+              <SearchForm onSubmit={handleSearch}>
+              <SearchIcon style={{fontSize : "20px"}} onClick={handleSearchIconClick}/>
+
+                <SearchInput placeholder="search" type="text" value={search} showInput={showInput} onChange={e => setSearch(e.target.value)}/>
+                <SearchInput type="submit" hidden />
+
+              </SearchForm>
+              {redirectSearch && <Navigate to={`/searchresults/${search}`} />}
+            </SearchContainer>
+
+
         </LogoAndSearch>
         
         <Icons>

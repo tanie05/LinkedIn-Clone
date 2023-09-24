@@ -18,13 +18,14 @@ const postRouter = require('./routes/postRoutes')
 const userRouter = require('./routes/userRoutes')
 const jobPostRouter = require('./routes/jobPostRoutes')
 const groupRouter = require('./routes/groupRoutes')
+const searchAndFilterRouter = require('./routes/searchAndFilterRoutes')
 
 app.use('/auth', authRouter)
 app.use('/posts', postRouter)
 app.use('/users', userRouter)
 app.use('/groups', groupRouter)
 app.use('/jobPosts', jobPostRouter)
-
+app.use('/search', searchAndFilterRouter)
 
 console.log(`MongoDB connection succesfull`)
 

@@ -20,11 +20,13 @@ const Container = styled.div`
   
 `;
 
-const Title = styled.h2`
+const Title = styled(Link)`
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 10px;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 `;
 
 const DetailsContainer = styled.div``;
@@ -110,11 +112,11 @@ export default function JobPostCard(props) {
 
     const [saveState, setSaveState] = useState(save);
 
-    const skillsList = skills.map(item => {
-        return (
-            <ul key={item}>{item}</ul>
-        )
-    })
+    // const skillsList = skills.map(item => {
+    //     return (
+    //         <ul key={item}>{item}</ul>
+    //     )
+    // })
 
     function handleSaveClick() {
 
@@ -144,7 +146,7 @@ export default function JobPostCard(props) {
     return (
         
         <Container>
-            <Title>{title}</Title>
+            <Title to = {`/job/${_id}`}>{title}</Title>
             <DetailsContainer>
                 <Details style={{ color: "gray" }}>
                     {company} • {location} ({employmentType})

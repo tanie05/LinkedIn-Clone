@@ -24,7 +24,13 @@ const postSchema = new Schema({
     belongToGroup:{
         type: Boolean, 
         default: false,
-    }
+    },
+    tags: [
+        {
+            type: String,
+            required: false
+        }
+    ]
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postSchema);
